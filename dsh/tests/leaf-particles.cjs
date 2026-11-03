@@ -13,7 +13,13 @@ async function run() {
     page.on('pageerror', e => errors.push(e.message)); page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
     const mount = async () => { await page.addScriptTag({ path: path.join(project, 'src/client.js') }); await page.evaluate(options => { window.disposeLeafSkin = mountDshSunlitClient({ window, document, ...options }); }, { config: manifest.config, assets, cssText }); await page.waitForFunction(() => window.__dshSunlitTidesClient.getLayoutState().main?.width > 0); };
     const open = () => page.locator('[data-sunlit-toggle]').click();
-    const setRange = async (key, value) => { const input = page.locator(`[data-sunlit-setting=${key}]`); await input.fill(String(value)); await input.dispatchEvent('input'); };
+    const setting = async key => {
+      const input = page.locator(`[data-sunlit-setting=${key}]`);
+      const group = page.locator(`[data-sunlit-control-group]:has([data-sunlit-setting=${key}])`);
+      if (await group.count() && await group.getAttribute('open') === null) await group.locator('summary').click();
+      return input;
+    };
+    const setRange = async (key, value) => { const input = await setting(key); await input.fill(String(value)); await input.dispatchEvent('input'); };
     const chooseLayout = async value => { await open(); await page.locator('[data-sunlit-setting=layout]').selectOption(value); await page.keyboard.press('Escape'); await page.waitForFunction(layout => window.__dshSunlitTidesClient.getLayoutState().layout === layout, value); };
     const chooseScene = async (mode, scene) => {
       await open(); await page.locator(`[data-sunlit-mode-choice=${mode}]`).click(); await page.locator(`[data-sunlit-scene-choice=${scene}]`).click(); await page.keyboard.press('Escape');
@@ -31,19 +37,19 @@ async function run() {
     const after = await page.locator('[data-sunlit-bubbles]>i').evaluateAll(els => els.map(el => el.getBoundingClientRect().y));
     assert.ok(before.some((item, index) => !item.hidden && after[index] - item.y > 5 && after[index] - item.y < 100));
     checks.push('live leaves fall downward'); await page.screenshot({ path: path.join(dir, 'dsh-leaves-light.png') });
-    await open(); await page.locator('[data-sunlit-setting=bubbles]').uncheck();
+    await open(); await (await setting('bubbles')).uncheck();
     assert.equal(await page.locator('[data-sunlit-bubbles]').isVisible(), false);
     await page.reload(); await mount(); assert.equal(await page.locator('[data-sunlit-bubbles]').isVisible(), false);
     checks.push('legacy bubbles key remains the leaf switch and persists on reload');
-    await open(); await page.locator('[data-sunlit-setting=bubbles]').check();
+    await open(); await (await setting('bubbles')).check();
     const duration = await leaf.evaluate(el => parseFloat(getComputedStyle(el).animationDuration));
     await setRange('bubbleSpeed', 200); assert.ok(await leaf.evaluate(el => parseFloat(getComputedStyle(el).animationDuration)) < duration);
     await setRange('bubbleCount', 5); assert.equal(await page.locator('[data-sunlit-bubbles]>i').count(), 5);
     await page.keyboard.press('Escape'); await page.reload(); await mount();
     assert.equal(await page.locator('[data-sunlit-bubbles]>i').count(), 5); assert.equal(await page.locator('[data-sunlit-setting=bubbleSpeed]').inputValue(), '200');
     checks.push('leaf quantity and speed update immediately and survive reload');
-    await open(); await page.locator('[data-sunlit-setting=motion]').uncheck(); assert.equal(await page.locator('[data-sunlit-bubbles]').isVisible(), false);
-    await page.locator('[data-sunlit-setting=motion]').check(); await page.keyboard.press('Escape');
+    await open(); await (await setting('motion')).uncheck(); assert.equal(await page.locator('[data-sunlit-bubbles]').isVisible(), false);
+    await (await setting('motion')).check(); await page.keyboard.press('Escape');
     await page.emulateMedia({ reducedMotion: 'reduce' }); assert.equal(await page.locator('[data-sunlit-bubbles]').isVisible(), false);
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     await page.waitForFunction(() => document.body.dataset.sunlitMotion === 'on');
@@ -77,10 +83,10 @@ async function run() {
             }),phase);
             for(const r of bounds){assert.equal(r.animation,'sunlit-edge-rise');assert.ok(r.diameter>=6&&r.diameter<=18);assert.ok(r.left>=r.inputRight-.1);assert.ok(r.right<=r.plane.right-2);assert.ok(r.top>=r.plane.top&&r.bottom<=r.plane.bottom);}
           }
-          await open();await page.locator('[data-sunlit-setting=bubbles]').uncheck();await page.keyboard.press('Escape');
+          await open();await (await setting('bubbles')).uncheck();await page.keyboard.press('Escape');
           assert.equal(await page.locator('[data-sunlit-bubbles]').isVisible(),false);
           assert.equal(await page.evaluate(()=>window.__dshSunlitTidesClient.getLayoutState().readingWidth),reading);
-          await open();await page.locator('[data-sunlit-setting=bubbles]').check();await page.keyboard.press('Escape');
+          await open();await (await setting('bubbles')).check();await page.keyboard.press('Escape');
           await chooseScene(mode,'orchard');assert.equal(await page.locator('[data-sunlit-edge-bubble]').count(),0);
           assert.equal(await page.locator('[data-sunlit-bubbles]').getAttribute('data-sunlit-particles'),'leaf');
         }
@@ -126,12 +132,12 @@ async function run() {
         const laneLeft = state.main.left + (state.main.width - state.readingWidth) / 2 + state.shift, laneRight = laneLeft + state.readingWidth;
         const composer = await page.locator('.composer').boundingBox();
         for (const item of leaves) { assert.ok(item.right <= laneLeft - 8 || item.x >= laneRight + 8); assert.ok(item.right <= composer.x || item.x >= composer.x + composer.width); assert.equal(item.pointer, 'none'); }
-        await open(); await page.locator('[data-sunlit-setting=bubbles]').uncheck(); await page.keyboard.press('Escape');
+        await open(); await (await setting('bubbles')).uncheck(); await page.keyboard.press('Escape');
         await page.waitForFunction(() => document.querySelector('[data-sunlit-bubbles]').hidden);
         const off = await page.evaluate(() => window.__dshSunlitTidesClient.getLayoutState());
         if (layout === 'panorama') assert.equal(off.readingWidth, state.readingWidth, 'panorama leaves must not squeeze the reading column');
         else { assert.ok(off.readingWidth >= state.readingWidth); if (width === 760) assert.ok(off.readingWidth > state.readingWidth); }
-        await open(); await page.locator('[data-sunlit-setting=bubbles]').check(); await page.keyboard.press('Escape');
+        await open(); await (await setting('bubbles')).check(); await page.keyboard.press('Escape');
         await page.screenshot({ path: path.join(dir, `${layout}-narrow-${width}.png`) });
       }
     }

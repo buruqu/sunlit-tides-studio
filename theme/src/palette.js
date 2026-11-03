@@ -14,11 +14,11 @@ function createFusionPalette({ document, initialState, mode, title, companionsEn
   style.textContent = `
     :host{font:13px/1.5 system-ui,"Microsoft YaHei",sans-serif;color:#293245;color-scheme:light}
     *{box-sizing:border-box}button,input,select{font:inherit}button{cursor:pointer}
-    button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid #628ce8;outline-offset:3px}
-    .toggle{position:absolute;right:12px;top:12px;border:1px solid #d3d9e7;border-radius:20px;padding:7px 13px;background:#fff9;backdrop-filter:blur(16px);color:inherit;pointer-events:auto;box-shadow:0 3px 12px #16223618}
-    .panel{position:absolute;right:12px;top:54px;width:min(340px,calc(100% - 24px));max-height:min(600px,calc(100% - 66px));overflow:auto;overscroll-behavior:contain;pointer-events:auto;border:1px solid #d3d9e7;border-radius:16px;padding:16px;background:#f8fafdf5;box-shadow:0 10px 40px #17223730;backdrop-filter:blur(20px)}
-    [hidden]{display:none!important}h2{font-size:15px;margin:0 0 3px}.subtitle{font-size:11px;color:#6a7384;margin:0 0 12px}.note{font-size:11px;color:#667186;margin:10px 0 0}details{border-top:1px solid #8997b42b;padding:9px 0}summary{cursor:pointer;font-weight:600;list-style-position:inside}.control{display:block;margin:10px 0}.line{display:flex;align-items:center;justify-content:space-between;gap:8px}.value{font-variant-numeric:tabular-nums;color:#667186;font-size:11px}input[type=range]{display:block;width:100%;margin:7px 0 0;accent-color:#6f8cd6}input[type=checkbox]{width:16px;height:16px;accent-color:#6f8cd6;flex:none}.check{display:flex;gap:10px;align-items:center;justify-content:space-between;margin:10px 0}.slot{padding:2px 0 6px;margin-top:9px;border-top:1px dashed #8997b430}.slot h3{font-size:12px;margin:8px 0 0}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.actions button{border:1px solid #cbd3e1;border-radius:8px;background:#fff8;color:inherit;padding:6px 9px}.status{font-size:11px;color:#476440;min-height:17px;margin-top:8px;overflow-wrap:anywhere}.status.error{color:#b54343}
-    :host([data-mode=dark]){color:#e0e6f1;color-scheme:dark}:host([data-mode=dark]) .toggle,:host([data-mode=dark]) .panel{background:#202737f5;border-color:#4a556b}:host([data-mode=dark]) .actions button{background:#33405a;border-color:#56627a}:host([data-mode=dark]) .note,:host([data-mode=dark]) .subtitle,:host([data-mode=dark]) .value{color:#b0bbcf}:host([data-mode=dark]) .status{color:#a7d29c}:host([data-mode=dark]) .status.error{color:#ffadad}
+    button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid #628ce8;outline-offset:3px}
+    .toggle{position:absolute;right:12px;top:12px;border:1px solid #d3d9e7;border-radius:8px;padding:7px 13px;background:#f8fafd;color:inherit;pointer-events:auto;box-shadow:0 3px 12px #16223618}
+    .panel{position:absolute;right:12px;top:54px;width:min(340px,calc(100% - 24px));max-height:min(600px,calc(100% - 66px));overflow:auto;overscroll-behavior:contain;pointer-events:auto;border:1px solid #d3d9e7;border-radius:16px;padding:16px;background:#f8fafd;box-shadow:0 10px 40px #17223730}
+    [hidden]{display:none!important}h2{font-size:15px;margin:0 0 3px}.subtitle{font-size:12px;color:#667186;margin:0 0 12px}.note{font-size:12px;color:#667186;margin:10px 0 0}details{border-top:1px solid #8997b42b;padding:9px 0}summary{cursor:pointer;font-weight:600;list-style-position:inside}.control{display:block;margin:10px 0}.line{display:flex;align-items:center;justify-content:space-between;gap:8px}.value{font-variant-numeric:tabular-nums;color:#667186;font-size:12px}input[type=range]{display:block;width:100%;margin:7px 0 0;accent-color:#6f8cd6}input[type=checkbox]{width:16px;height:16px;accent-color:#6f8cd6;flex:none}.check{display:flex;gap:10px;align-items:center;justify-content:space-between;margin:10px 0}.slot{padding:2px 0 6px;margin-top:9px;border-top:1px solid #8997b42b}.slot h3{font-size:12px;margin:8px 0 0}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.actions button{border:1px solid #cbd3e1;border-radius:8px;background:#fff8;color:inherit;padding:7px 10px;min-height:34px}.status{font-size:12px;color:#476440;min-height:17px;margin-top:8px;overflow-wrap:anywhere}.status.error{color:#b54343}
+    :host([data-mode=dark]){color:#e0e6f1;color-scheme:dark}:host([data-mode=dark]) .toggle,:host([data-mode=dark]) .panel{background:#202737;border-color:#4a556b}:host([data-mode=dark]) .actions button{background:#33405a;border-color:#56627a}:host([data-mode=dark]) .note,:host([data-mode=dark]) .subtitle,:host([data-mode=dark]) .value{color:#b0bbcf}:host([data-mode=dark]) .status{color:#a7d29c}:host([data-mode=dark]) .status.error{color:#ffadad}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
   `;
   shadow.appendChild(style);
@@ -104,7 +104,6 @@ function createFusionPalette({ document, initialState, mode, title, companionsEn
   range(reading, '聊天最大宽度', 'common', 'chatWidth', 480, 1440, ' px');
   if (!continuousReading) check(reading, '消息阅读底板', 'mode', 'messagePanel');
   range(reading, sceneReading ? '背景柔光' : continuousReading ? '阅读面板不透明度' : '消息底板不透明度', 'mode', 'messageOpacity', sceneReading ? () => activeMode === 'dark' ? 64 : 60 : continuousReading ? 97 : 20, sceneReading ? 82 : 100, '%');
-  if (continuousReading) reading.appendChild(element('p','note',sceneReading ? '调低可看见更多背景，调高让文字更突出；亮暗模式分别保存。' : '连续阅读面板保护正文、运行状态和命令文字。'));
   const characters = group('角色');
   function decorationOpacity(label, key, resetLabel) {
     const wrapper = element('label', 'control'), line = element('span', 'line'), output = element('span', 'value');
@@ -125,7 +124,6 @@ function createFusionPalette({ document, initialState, mode, title, companionsEn
   }
   decorationOpacity('立绘透明度', 'portraitOpacity', '立绘跟随背景');
   decorationOpacity('表情包透明度', 'emoteOpacity', '表情包跟随背景');
-  characters.append(element('p', 'note', '0% 隐藏，100% 完全显示。拖动后独立控制，亮暗分别保存；点击跟随背景可恢复原来的融合效果。'));
   for (const [slot, label] of [['left', '左侧角色'], ['primary', '右侧主角色'], ['secondary', '右侧副角色']]) {
     const container = element('div', 'slot'); container.appendChild(element('h3', '', avatarsEnabled&&slot==='secondary'?'西西 / 娅娅对话头像':label)); characters.appendChild(container);
     check(container, '显示', 'mode', 'visible', slot);
@@ -153,18 +151,18 @@ function createFusionPalette({ document, initialState, mode, title, companionsEn
   galleryButton.setAttribute('aria-controls', 'sgk-background-gallery');
   listen(galleryButton, 'click', () => win?.__SUNLIT_GALLERY__?.open(galleryButton));
   galleryActions.append(galleryButton);
-  background.append(galleryActions, element('p', 'note', '果园午后为亮色默认，夜色相依为暗色默认；相册选择按亮暗模式分别保存。'));
+  background.append(galleryActions);
   range(background, '背景强度', 'mode', 'backgroundStrength', 0, 100, '%');
   if (sidebarEnabled) check(background, '独立侧栏人物背景', 'common', 'sidebarArt');
   if (sidebarEnabled) check(background, '正文与导航渐变字', 'common', 'gradientText');
   const motion = group('动效');
-  if (companionsEnabled) check(motion, '动态 Q 版伙伴（总开关）', 'common', 'companions');
+  if (companionsEnabled) check(motion, '动态 Q 版伙伴', 'common', 'companions');
   if (xixiEmoteEnabled) check(motion, '西西动态表情', 'common', 'sidebarEmote');
   if (sceneEffectsEnabled) check(motion, '场景光影与氛围', 'common', 'sceneEffects');
-  if (sceneEffectsEnabled) check(motion, '背景动态（总开关）', 'common', 'wallpaperMotion');
+  if (sceneEffectsEnabled) check(motion, '背景动态', 'common', 'wallpaperMotion');
   if (sceneEffectsEnabled) check(motion, '主背景人物眨眼', 'common', 'livingScene');
   if (sceneEffectsEnabled) check(motion, '主背景头发与衣摆摆动', 'common', 'layeredScene');
-  check(motion, '场景粒子（果园落叶 / 其他原有特效）', 'common', 'bubbles');
+  check(motion, '场景粒子', 'common', 'bubbles');
   range(motion, '粒子数量', 'common', 'bubbleCount', 5, 40);
   range(motion, '粒子速度', 'common', 'bubbleSpeed', 30, 200, '%');
   check(motion, '减少动效', 'common', 'reduceMotion');
@@ -172,8 +170,8 @@ function createFusionPalette({ document, initialState, mode, title, companionsEn
   const startupLabel = element('label', 'check');
   const startupInput = element('input'); startupInput.type = 'checkbox'; startupInput.disabled = true;
   startupLabel.append(element('span', '', '以后启动 Codex 时播放龙娘动画'), startupInput);
-  const startupHelp = element('p', 'note', '需要通过晴光与泡影启动器连接 Codex 后设置启动动画。');
-  startup.append(startupLabel, element('p', 'note', '正常启动时自动播放，可随时按 Esc 跳过。'), startupHelp);
+  const startupHelp = element('p', 'note', '请先通过晴光与泡影启动器连接 Codex。');
+  startup.append(startupLabel, element('p', 'note', '按 Esc 跳过动画。'), startupHelp);
   const startupKey = 'sunlit-tides.startup.enabled';
   function saveStartup(value) {
     try { win.localStorage.setItem(startupKey, String(value)); } catch (_) { /* Native preference remains available if browser storage is blocked. */ }
@@ -195,7 +193,6 @@ function createFusionPalette({ document, initialState, mode, title, companionsEn
   const layout = group('避让与专注');
   check(layout, '避让右侧面板', 'common', 'avoidPanels');
   check(layout, '专注模式', 'common', 'focusMode');
-  panel.appendChild(element('p', 'note', '背景与参数跟随 Codex 当前外观，亮暗模式分别保存。调色板参数可导出备份；启动动画由启动器单独保存。'));
   const actions = element('div', 'actions');
   const file = element('input'); file.type = 'file'; file.accept = '.json,application/json'; file.hidden = true;
   const status = element('p', 'status'); status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
@@ -222,16 +219,18 @@ function createFusionPalette({ document, initialState, mode, title, companionsEn
     } catch (error) { setStatus(error?.message || '导入失败，配置未更改。', true); }
     finally { file.value = ''; }
   });
-  panel.append(actions, file, status);
+  const footer = element('footer', 'palette-footer');
+  footer.append(status, actions);
+  panel.append(file, footer);
   if(version)panel.appendChild(element('p','note','晴光与泡影 · '+version));
   const scroll=element('div','palette-scroll');
-  for(const child of [...panel.children])if(child!==header&&child!==actions)scroll.append(child);
-  panel.append(scroll,actions);
-  style.textContent+=`.panel{padding:0;display:flex;flex-direction:column;overflow:hidden;background:#f8fafd}.palette-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 16px;border-bottom:1px solid #8997b42b;flex:none}.palette-header h2{margin:0}.palette-close{color:inherit;background:transparent;border:0;font-size:22px;line-height:1;padding:0 4px}.palette-scroll{padding:12px 16px;overflow:auto;min-height:0;overscroll-behavior:contain}.panel>.actions{padding:12px 16px;border-top:1px solid #8997b42b;margin:0;flex:none;display:grid;grid-template-columns:1fr 1fr}.actions .edit-primary{background:#6f86bf;color:#fff;border-color:#6f86bf}:host([data-mode=dark]) .panel{background:#202737}:host([data-mode=dark]) .actions .edit-primary{background:#ad99d1;color:#211a2d}`;
+  for(const child of [...panel.children])if(child!==header&&child!==footer)scroll.append(child);
+  panel.append(scroll,footer);
+  style.textContent+=`.panel{padding:0;display:flex;flex-direction:column;overflow:hidden;background:#f8fafd}.palette-header{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 16px;border-bottom:1px solid #8997b42b;flex:none}.palette-header h2{margin:0}.palette-close{color:inherit;background:transparent;border:0;width:30px;height:30px;font-size:20px;line-height:1;padding:0 4px}.palette-scroll{padding:12px 16px;overflow:auto;min-height:0;overscroll-behavior:contain}.palette-footer{padding:12px 16px;border-top:1px solid #8997b42b;flex:none}.palette-footer .actions{margin:0;display:grid;grid-template-columns:1fr 1fr}.palette-footer .status{margin:0 0 8px}.status:empty{display:none}.actions button:disabled{cursor:default;opacity:.55}.palette-scroll>details:first-of-type{border-top:0}.subtitle{margin:0 0 10px}.actions .edit-primary{background:#836792;color:#fff;border-color:#836792}:host([data-mode=dark]) .panel{background:#202737}:host([data-mode=dark]) .actions .edit-primary{background:#ad99d1;color:#211a2d;border-color:#ad99d1}`;
   shadow.append(toggle, panel);
   function sync() {
     host.dataset.mode = activeMode;
-    subtitle.textContent = `${activeMode === 'dark' ? '暗色' : '亮色'}参数 · 跟随 Codex 外观`;
+    subtitle.textContent = `${activeMode === 'dark' ? '暗色' : '亮色'}外观`;
     controls.forEach((update) => update());
   }
   function update(nextState, nextMode) {

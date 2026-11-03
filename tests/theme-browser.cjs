@@ -484,13 +484,15 @@ async function main() {
         await startupPage.getByRole('button', { name: '调色板', exact: true }).click();
         await startupPage.getByText('启动动画', { exact: true }).click();
         assert.equal(await input.isDisabled(), true);
-        assert.equal(await startupPage.getByText('需要通过晴光与泡影启动器连接 Codex 后设置启动动画。', { exact: true }).isVisible(), true);
+        const bridgeHelp = startupPage.getByText(/启动器连接 Codex/);
+        assert.equal(await bridgeHelp.isVisible(), true);
+        assert.equal(await startupPage.evaluate(() => startupChanges.length), 0);
         await startupPage.evaluate(() => {
           window.__sunlitTidesStartup = { enabled: true, available: true };
           window.dispatchEvent(new CustomEvent('sunlit-tides:startup-state', { detail: __sunlitTidesStartup }));
         });
         assert.equal(await input.isEnabled(), true); assert.equal(await input.isChecked(), true);
-        assert.equal(await startupPage.getByText('需要通过晴光与泡影启动器连接 Codex 后设置启动动画。', { exact: true }).isVisible(), false);
+        assert.equal(await bridgeHelp.isVisible(), false);
         await input.uncheck();
         assert.equal(await startupPage.evaluate(() => localStorage.getItem('sunlit-tides.startup.enabled')), 'false');
         await input.check();

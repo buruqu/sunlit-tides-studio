@@ -1,11 +1,11 @@
 # 安装、升级与恢复
 
-从 [v2.1.0 联合发行页](https://github.com/buruqu/sunlit-tides-studio/releases/tag/v2.1.0) 选择对应包。安装包与源码包用途不同：普通用户下载 Codex Windows x64 包或 DSH 插件包即可。本批为 Codex 2.1.0 / DSH 0.3.0，包含 2.0.2 的专用入口图标、可拖出面板和素材用途编辑。升级前建议在编辑器导出工程，并保留自己的素材原文件。
+从 [v2.1.1 联合发行页](https://github.com/buruqu/sunlit-tides-studio/releases/tag/v2.1.1) 选择对应包。安装包与源码包用途不同：普通用户下载 Codex Windows x64 包或 DSH 插件包即可。本批为 Codex 2.1.1 / DSH 0.3.1，优化调色板分组与亮暗编辑器，保留可拖出面板、素材用途与既有工程。升级前建议在编辑器导出工程，并保留自己的素材原文件。
 
-## Codex Desktop · 2.1.0
+## Codex Desktop · 2.1.1
 
 1. 安装并登录 Windows Codex Desktop；主题包面向 Windows 11 x64。
-2. 解压 `SunlitTidesCodex-2.1.0-win-x64.zip`，双击包内 `Install.cmd`，无需管理员权限。
+2. 解压 `SunlitTidesCodex-2.1.1-win-x64.zip`，双击包内 `Install.cmd`，无需管理员权限。
 3. 使用原来的普通桌面 / 开始菜单入口，或专用主题入口打开。首次加载图片可能需要数秒。
 
 安装器默认使用 `%LOCALAPPDATA%\SunlitTidesCodex`，创建当前用户托盘宿主、登录启动项及主题快捷方式。升级先验证旧版受管文件，保留设置、数据及完整旧目录；无法确认目录身份、文件被修改或发生路径冲突时会停止。品牌更新不要求改名或清空旧设置。
@@ -27,11 +27,11 @@
 
 Codex 可选启动视频可在调色板、视频底部或托盘关闭，Esc 可跳过；Windows 媒体组件不可用时自动跳过。
 
-## DeepSeek Harness · 插件 0.3.0
+## DeepSeek Harness · 插件 0.3.1
 
 最初接口基线是 DSH Windows 桌面端 `0.2.1-rc.2`，适配环境为 `0.2.1-rc.3`。插件版本与宿主版本分开管理；安装器要求已经初始化的 desktop profile，以及安装自带的官方 `dsh.cmd`。
 
-先正常退出 DSH，解压 `SunlitTides-DSH-0.3.0.zip`，在解压目录打开 PowerShell：
+先正常退出 DSH，解压 `SunlitTides-DSH-0.3.1.zip`，在解压目录打开 PowerShell：
 
 ```powershell
 $dshData = Read-Host 'DSH 资料目录（包含 profiles 和 plugins）'

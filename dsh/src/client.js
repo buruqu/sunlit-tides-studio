@@ -109,18 +109,18 @@ function mountDshSunlitClient({ window, document, config = {}, assets = {}, cssT
   // Separate layout keeps its original vivid margin decorations above the wash.
   artwork.append(background, light);
   sceneArea.append(artwork, wash, sidebarVeil, decorations, manualDecorations);
-  const toggle = appendOwned(node("button", { type: "button", "data-sunlit-toggle": "", "aria-expanded": "false", "aria-controls": "dsh-sunlit-palette", title: "晴光与泡影 · 本机外观设置" }, "✦ 晴光"));
+  const toggle = appendOwned(node("button", { type: "button", "data-sunlit-toggle": "", "aria-expanded": "false", "aria-controls": "dsh-sunlit-palette", "aria-label": "调色板" }, "调色板"));
   const panel = appendOwned(node("section", { id: "dsh-sunlit-palette", "data-sunlit-panel": "", role: "dialog", "aria-label": "晴光与泡影 · 本机调色板", hidden: "" }));
   const header = node("header");
   const heading = node("div");
-  heading.append(node("strong", {}, config.title || "晴光与泡影"), node("small", {}, "DSH 本机调色板"));
+  heading.append(node("strong", {}, config.title || "晴光与泡影"));
   const close = node("button", { type: "button", "aria-label": "关闭调色板" }, "×");
   header.append(heading, close);
-  const subtitle = node("p", { "data-sunlit-hint": "" }, "随 DSH 明暗模式自动切换。相册可分别记住两种模式；这些设置仅保存在本机。 ");
+  const subtitle = node("p", { "data-sunlit-hint": "" }, "");
   const status = node("p", { "data-sunlit-status": "", role: "status", "aria-live": "polite" });
   const tabs = node("div", { "data-sunlit-modes": "", role: "group", "aria-label": "设置哪种模式的背景" });
   const modeButtons = {};
-  for (const [mode, label] of [["light", "晴光 · 亮色"], ["dark", "泡影 · 暗色"]]) {
+  for (const [mode, label] of [["light", "亮色背景"], ["dark", "暗色背景"]]) {
     const button = node("button", { type: "button", "data-sunlit-mode-choice": mode, "aria-pressed": "false" }, label);
     listen(button, "click", () => { editorMode = mode; refreshPanel(); });
     tabs.append(button); modeButtons[mode] = button;
@@ -128,7 +128,7 @@ function mountDshSunlitClient({ window, document, config = {}, assets = {}, cssT
   const gallery = node("div", { "data-sunlit-gallery": "", role: "group", "aria-label": "选择背景相册" });
   const galleryButtons = new Map();
   for (const scene of scenes) {
-    const button = node("button", { type: "button", "data-sunlit-scene-choice": scene.id, "aria-pressed": "false", title: `${scene.label} · ${scene.description || ""}` });
+    const button = node("button", { type: "button", "data-sunlit-scene-choice": scene.id, "aria-pressed": "false" });
     const image = node("img", { alt: "", loading: "lazy", decoding: "async" });
     image.src = assets[scene.asset]; image.style.objectPosition = scene.position || "center";
     button.append(image, node("span", {}, scene.label));
@@ -160,7 +160,7 @@ function mountDshSunlitClient({ window, document, config = {}, assets = {}, cssT
     const input = node("input", { type: "range", min: "0", max: "100", step: "1", "aria-label": label, "data-sunlit-setting": key });
     const restore = node("button", { type: "button", "data-sunlit-follow": key }, follow);
     top.append(node("span", {}, label), output);
-    row.append(top, input, node("small", {}, "当前 DSH 明暗模式分别保存；0 隐藏，100 完全显示。"), restore);
+    row.append(top, input, restore);
     controls.append(row); inputs.set(key, { input, output, perMode: true });
     listen(input, "input", () => { settings[key][mode()] = Number(input.value); saveAndApply(); });
     listen(restore, "click", () => { settings[key][mode()] = null; saveAndApply(); });
@@ -169,7 +169,7 @@ function mountDshSunlitClient({ window, document, config = {}, assets = {}, cssT
   slider("阅读宽度", "readingWidth", 480, 1440, " px");
   slider("粒子数量", "bubbleCount", 5, 40, "");
   slider("粒子速度", "bubbleSpeed", 30, 200, "%");
-  for (const [key, label] of [["motion", "场景动态"], ["lighting", "氛围光影"], ["blink", "人物眨眼"], ["bubbles", "场景粒子（果园落叶 / 其他泡泡）"], ["companions", "双人立绘"], ["emotes", "双人 GIF"], ["gradientText", "字体渐变"]]) {
+  for (const [key, label] of [["motion", "场景动态"], ["lighting", "氛围光影"], ["blink", "人物眨眼"], ["bubbles", "场景粒子"], ["companions", "双人立绘"], ["emotes", "双人 GIF"], ["gradientText", "字体渐变"]]) {
     const row = node("label", { "data-sunlit-control": key });
     const input = node("input", { type: "checkbox", "data-sunlit-setting": key });
     row.append(node("span", {}, label), input); inputs.set(key, { input }); controls.append(row);
@@ -178,15 +178,16 @@ function mountDshSunlitClient({ window, document, config = {}, assets = {}, cssT
   const footer = node("footer");
   const reset = node("button", { type: "button", "data-sunlit-reset": "" }, "恢复主题默认");
   footer.append(reset);
-  panel.append(header, subtitle, tabs, gallery, controls, status, footer);
+  footer.prepend(status);
+  panel.append(header, subtitle, tabs, gallery, controls, footer);
   const diyEdit = node('button', {type:'button','data-sunlit-diy-edit':''}, '开启编辑');
   footer.append(diyEdit);
   listen(diyEdit, 'click', () => { setOpen(false); diy?.startEditing(); });
   const panelBody=node('div',{'data-sunlit-panel-body':''});
   for(const child of [...panel.children])if(child!==header&&child!==footer)panelBody.append(child);
   panel.append(panelBody,footer);
-  const categories=[['阅读',['layout','backgroundOpacity','contentOpacity','readingWidth']],['角色',['companionOpacity','emoteOpacity','companions','emotes']],['动效',['bubbleCount','bubbleSpeed','motion','lighting','blink','bubbles','gradientText']]];
-  for(const [label,keys]of categories){const section=node('details',{'data-sunlit-control-group':''});section.open=label==='阅读';section.append(node('summary',{},label));for(const key of keys){const row=controls.querySelector(`[data-sunlit-control="${key}"]`);if(row)section.append(row);}controls.append(section);}
+  const categories=[['背景',['layout','backgroundOpacity']],['阅读',['contentOpacity','readingWidth','gradientText']],['角色',['companionOpacity','emoteOpacity','companions','emotes']],['动效',['motion','lighting','blink','bubbles','bubbleCount','bubbleSpeed']]];
+  for(const [label,keys]of categories){const section=node('details',{'data-sunlit-control-group':''});section.open=label==='阅读'||label==='背景';section.append(node('summary',{},label));if(label==='背景')section.append(tabs,gallery);for(const key of keys){const row=controls.querySelector(`[data-sunlit-control="${key}"]`);if(row)section.append(row);}controls.append(section);}
   const panelDrag=window.mountSunlitPanel?.({window,document,panel,handle:header,styleText:cssText,theme:()=>mode(),key:'theme'});
   const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)");
   const mode = () => body.hasAttribute("data-ds-dark-theme") ? "dark" : "light";
@@ -408,7 +409,7 @@ function mountDshSunlitClient({ window, document, config = {}, assets = {}, cssT
       else if (input.tagName === "SELECT") input.value = settings[key];
       else { input.value = String(settings[key]); output.textContent = `${settings[key]}${suffix}`; }
     }
-    subtitle.textContent = `DSH 当前为${current === "dark" ? "暗色" : "亮色"}。正在设置${editing === "dark" ? "暗色" : "亮色"}背景；切换这里仅选择相册，不修改 DSH 明暗模式。字体渐变开启时，实际阅读底色最低亮色60% / 暗色68%，保留滑块偏好。`;
+    subtitle.textContent = `当前外观：${current === "dark" ? "暗色" : "亮色"}`;
   }
   function apply() {
     if (disposed) return;
@@ -461,8 +462,8 @@ function mountDshSunlitClient({ window, document, config = {}, assets = {}, cssT
   }
   function saveAndApply() {
     settings = normalize(settings);
-    try { window.localStorage.setItem(STORAGE, JSON.stringify(settings)); status.textContent = "已保存到本机。"; }
-    catch (_) { status.textContent = "浏览器阻止了本机保存；本次设置仍然有效。"; }
+    try { window.localStorage.setItem(STORAGE, JSON.stringify(settings)); status.textContent = "已保存。"; }
+    catch (_) { status.textContent = "保存失败，刷新后将丢失本次修改。"; }
     apply();
   }
   function setOpen(open) {

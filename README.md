@@ -2,18 +2,18 @@
 
 为 Windows **Codex Desktop** 与 **DeepSeek Harness（DSH）**打造的可视化外观工作室。以西格莉卡 × 达妮娅的动态场景为起点，也可以导入自己的图片、安排布局、调整字体与粒子，制作亮暗独立的主题方案。
 
-本项目是独立社区作品，与 OpenAI、DeepSeek、库洛游戏无官方隶属关系。本次联合版本为 **Codex 2.1.0 / DSH 0.3.0**，发行标签为 `v2.1.0`。
+本项目是独立社区作品，与 OpenAI、DeepSeek、库洛游戏无官方隶属关系。本次联合版本为 **Codex 2.1.1 / DSH 0.3.1**，发行标签为 `v2.1.1`。
 
-本版的调色板和编辑面板可通过标题栏拖出、拖回应用；导入素材按用途自动放置，界面统一使用“开启编辑”。包含此前 2.0.2 的专用入口图标，见[发布说明](docs/RELEASE-2.1.0.md)。
+本版精简调色板文案，编辑器跟随亮暗外观，将素材、布局、字体和特效分开；恢复和导入导出收至「工程」。保留面板拖出拖回、素材用途与原有工程，见[发布说明](docs/RELEASE-2.1.1.md)。
 
 ## 下载
 
 | 平台 | 安装包 | 说明 |
 | --- | --- | --- |
-| Codex Desktop | [Windows x64 · 2.1.0](https://github.com/buruqu/sunlit-tides-studio/releases/download/v2.1.0/SunlitTidesCodex-2.1.0-win-x64.zip) | 自包含托盘宿主，无需单独安装 Node.js、.NET 或 Tessalume |
-| DeepSeek Harness | [DSH 插件 · 0.3.0](https://github.com/buruqu/sunlit-tides-studio/releases/download/v2.1.0/SunlitTides-DSH-0.3.0.zip) | 使用 DSH 自带 CLI 安装，不含 GPT / Dragon 启动动画 |
+| Codex Desktop | [Windows x64 · 2.1.1](https://github.com/buruqu/sunlit-tides-studio/releases/download/v2.1.1/SunlitTidesCodex-2.1.1-win-x64.zip) | 自包含托盘宿主，无需单独安装 Node.js、.NET 或 Tessalume |
+| DeepSeek Harness | [DSH 插件 · 0.3.1](https://github.com/buruqu/sunlit-tides-studio/releases/download/v2.1.1/SunlitTides-DSH-0.3.1.zip) | 使用 DSH 自带 CLI 安装，不含 GPT / Dragon 启动动画 |
 
-[联合发行页](https://github.com/buruqu/sunlit-tides-studio/releases/tag/v2.1.0) · [整个仓库源码](https://github.com/buruqu/sunlit-tides-studio/archive/refs/tags/v2.1.0.zip) · [DSH 独立源码](https://github.com/buruqu/sunlit-tides-studio/releases/download/v2.1.0/SunlitTides-DSH-source-0.3.0.zip) · [发布说明](docs/RELEASE-2.1.0.md)
+[联合发行页](https://github.com/buruqu/sunlit-tides-studio/releases/tag/v2.1.1) · [整个仓库源码](https://github.com/buruqu/sunlit-tides-studio/archive/refs/tags/v2.1.1.zip) · [DSH 独立源码](https://github.com/buruqu/sunlit-tides-studio/releases/download/v2.1.1/SunlitTides-DSH-source-0.3.1.zip) · [发布说明](docs/RELEASE-2.1.1.md)
 
 ## 双端可视化编辑
 
@@ -24,7 +24,7 @@
 - **字体与特效**：设置本机字体、字号、行高、纯色与渐变；添加落叶、泡泡或自己的图片 / GIF 粒子，调整数量、大小、方向、速度与摇摆。
 - **本地工程**：亮暗方案独立保存；画布草稿支持保存或取消，可恢复默认、恢复上次保存、清理未使用素材，并导出 / 导入分享工程。Codex 与 DSH 可交换素材方案，各自保留宿主功能区布局。
 
-Codex 从 **调色板 → 开启编辑** 进入；DSH 从 **晴光 → 开启编辑** 进入。完整操作、快捷键及容量限制见[编辑使用说明](docs/DIY.md)。
+Codex 从 **调色板 → 开启编辑** 进入；DSH 从 **调色板 → 开启编辑** 进入。完整操作、快捷键及容量限制见[编辑使用说明](docs/DIY.md)。
 
 ## 预设场景
 
@@ -70,7 +70,7 @@ node tests/diy-integration.cjs
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Package.ps1
 ```
 
-浏览器检查需要 Playwright 和可用浏览器，可通过 `PLAYWRIGHT_EXECUTABLE_PATH` 指定浏览器。DSH 构建命令见 [DSH README](dsh/README.md#构建与验证)。`theme/` 为 Codex 主题，`host/` 为 Windows 宿主，`dsh/` 为 DSH 插件，`shared/` 为共用编辑器。构建产物、安装状态和日志不作为源码提交。验证范围见 [发布说明](docs/RELEASE-2.1.0.md) 与 [本版验证记录](docs/VALIDATION-2.1.0.md)；合成浏览器测试不等于原生窗口验收。
+浏览器检查需要 Playwright 和可用浏览器，可通过 `PLAYWRIGHT_EXECUTABLE_PATH` 指定浏览器。DSH 构建命令见 [DSH README](dsh/README.md#构建与验证)。`theme/` 为 Codex 主题，`host/` 为 Windows 宿主，`dsh/` 为 DSH 插件，`shared/` 为共用编辑器。构建产物、安装状态和日志不作为源码提交。验证范围见 [发布说明](docs/RELEASE-2.1.1.md) 与 [本版验证记录](docs/VALIDATION-2.1.1.md)；合成浏览器测试不等于原生窗口验收。
 
 ## 来源与许可
 

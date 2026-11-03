@@ -1,12 +1,12 @@
 # 晴光与泡影 Studio · DSH
 
-**Sunlit Tides Studio for DeepSeek Harness** 是独立社区动态皮肤，本版 **0.3.0** 与 Codex **2.1.0** 联合发行（标签 `v2.1.0`）。品牌名称已更新，技术包名 `@dsh-external/dsh-client-ui-skin-sunlit-tides` 保持兼容。本项目与 DeepSeek、OpenAI、库洛游戏无官方隶属关系。
+**Sunlit Tides Studio for DeepSeek Harness** 是独立社区动态皮肤，本版 **0.3.1** 与 Codex **2.1.1** 联合发行（标签 `v2.1.1`）。品牌名称已更新，技术包名 `@dsh-external/dsh-client-ui-skin-sunlit-tides` 保持兼容。本项目与 DeepSeek、OpenAI、库洛游戏无官方隶属关系。
 
-[下载安装包](https://github.com/buruqu/sunlit-tides-studio/releases/download/v2.1.0/SunlitTides-DSH-0.3.0.zip) · [独立源码](https://github.com/buruqu/sunlit-tides-studio/releases/download/v2.1.0/SunlitTides-DSH-source-0.3.0.zip) · [联合发行页](https://github.com/buruqu/sunlit-tides-studio/releases/tag/v2.1.0)
+[下载安装包](https://github.com/buruqu/sunlit-tides-studio/releases/download/v2.1.1/SunlitTides-DSH-0.3.1.zip) · [独立源码](https://github.com/buruqu/sunlit-tides-studio/releases/download/v2.1.1/SunlitTides-DSH-source-0.3.1.zip) · [联合发行页](https://github.com/buruqu/sunlit-tides-studio/releases/tag/v2.1.1)
 
 ## 双端共用的编辑器
 
-从 **晴光 → 开启编辑** 进入。背景、侧栏背景、立绘、表情、普通图片、特效粒子纹理六类素材支持 PNG、JPEG、WebP、GIF 导入；内置素材也可在同一调色板调整、替换或恢复默认。
+从 **调色板 → 开启编辑** 进入。编辑器跟随亮暗外观；素材、布局、字体和特效分别展示，恢复默认、恢复上次保存与导入导出收在「工程」。背景、侧栏背景、立绘、表情、普通图片、特效粒子纹理六类素材支持 PNG、JPEG、WebP、GIF 导入；内置素材也可在同一调色板调整、替换或恢复默认。
 
 画布支持拖拽、缩放、按像素保持比例、翻转、旋转、透明度、层级和模糊；方向键微调、撤销 / 重做、居中与移回画布方便精修。侧栏、聊天区与输入框可移动缩放并保留原生交互。字体、字号、行高、纯色 / 渐变可调，代码、链接与状态信息保留语义样式。落叶、泡泡及自定义图片 / GIF 粒子可调整数量、速度、方向与范围。
 
@@ -18,7 +18,7 @@
 
 - 跟随 DSH 亮暗外观，默认「果园午后 / 夜色相依」，相册保留「夜色相依·泪光」等场景。预设包含人物分层摆动、眨眼、光影、落叶或泡泡；贯穿背景和独立侧栏可切换，角色透明度可独立调整。
 - 原生场景按设备刷新率调度，上限 120fps；输入、滚动、后台与减少动态模式会暂停或回退静态图，WebGL 不可用时保留原图。实际帧率取决于设备负载。预设呼吸参数沿用原实现，自然度仍有独立待检查项。
-- 最初接口基线为 Windows 桌面端 DSH `0.2.1-rc.2`，适配环境为 `0.2.1-rc.3`；这与本版皮肤版本 `0.3.0` 是两个版本体系。其他宿主版本及远程 Web 部署未承诺已验收。
+- 最初接口基线为 Windows 桌面端 DSH `0.2.1-rc.2`，适配环境为 `0.2.1-rc.3`；这与本版皮肤版本 `0.3.1` 是两个版本体系。其他宿主版本及远程 Web 部署未承诺已验收。
 - 依赖 DSH 的插件接口与界面结构，宿主更新后可能需要适配。不修改账号、模型权限或聊天记录，不捆绑字体，不自动云同步 编辑素材。
 - **DSH 不包含 GPT / Dragon 启动动画。** 导入素材不会自动获得原预设的人物网格动画；不支持视频、Live2D、脚本、远程 URL 或用户 SVG 导入。
 
@@ -49,7 +49,7 @@ $dshBackup = Read-Host '安装输出中的恢复点目录'
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\installer\Restore.ps1 -BackupPath $dshBackup -DshHome $dshData -CliPath $dshCli
 ```
 
-新开 PowerShell 会话时先重新填写 `$dshData` 与 `$dshCli`。恢复器核对配置与安装后的哈希；后续有改动时停止，避免覆盖新设置。不要手动删除备份或替换整个 profile。更多边界见 [安装指南](https://github.com/buruqu/sunlit-tides-studio/blob/v2.1.0/docs/INSTALL.md)。
+新开 PowerShell 会话时先重新填写 `$dshData` 与 `$dshCli`。恢复器核对配置与安装后的哈希；后续有改动时停止，避免覆盖新设置。不要手动删除备份或替换整个 profile。更多边界见 [安装指南](https://github.com/buruqu/sunlit-tides-studio/blob/v2.1.1/docs/INSTALL.md)。
 
 ## 构建与验证
 
@@ -69,7 +69,7 @@ node tests/panel-transport.cjs
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Package.ps1
 ```
 
-浏览器检查使用 Playwright 与本机 Edge；部分检查支持 `PLAYWRIGHT_EXECUTABLE_PATH`，以各测试入口为准。构建生成 `lib/client.js`，打包输出到 `release/`；独立源码包包含 `native-source/`，可独立构建原生程序。运行安装包无需 .NET SDK 或独立启动 Node；浮动面板由插件按需启动并回收。合成测试、安装文件一致性及原生窗口验收分别记录，不能相互替代。本版隔离验证和实际宿主验收的边界见 [验证记录](https://github.com/buruqu/sunlit-tides-studio/blob/v2.1.0/docs/VALIDATION-2.1.0.md)。
+浏览器检查使用 Playwright 与本机 Edge；部分检查支持 `PLAYWRIGHT_EXECUTABLE_PATH`，以各测试入口为准。构建生成 `lib/client.js`，打包输出到 `release/`；独立源码包包含 `native-source/`，可独立构建原生程序。运行安装包无需 .NET SDK 或独立启动 Node；浮动面板由插件按需启动并回收。合成测试、安装文件一致性及原生窗口验收分别记录，不能相互替代。本版隔离验证和实际宿主验收的边界见 [验证记录](https://github.com/buruqu/sunlit-tides-studio/blob/v2.1.1/docs/VALIDATION-2.1.1.md)。
 
 ## 来源与许可
 

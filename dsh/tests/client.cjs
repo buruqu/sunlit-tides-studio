@@ -466,7 +466,7 @@ async function run() {
         window.storageDeniedStatus = document.querySelector('[data-sunlit-status]').textContent;
         disposeSkin(); Object.defineProperty(window, 'localStorage', original);
       });
-      assert.match(await page.evaluate(() => storageDeniedStatus), /阻止了本机保存/);
+      assert.match(await page.evaluate(() => storageDeniedStatus), /保存失败/);
       assert.equal(await page.evaluate(() => Boolean(window.__dshSunlitTidesClient || window.__DSH_SUNLIT_SCENE_RENDERER__)), false);
     });
     assert.deepEqual(errors, []); assert.deepEqual(requests, []);

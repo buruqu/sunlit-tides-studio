@@ -12,7 +12,32 @@
   const copy = value => Array.isArray(value) ? value.map(copy) : value && typeof value === 'object' ? Object.fromEntries(Object.entries(value).map(([key,item])=>[key,copy(item)])) : value;
   const number = (value, min, max, fallback) => Number.isFinite(+value) ? Math.max(min, Math.min(max, +value)) : fallback;
   const uid = () => 'diy-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
-  const baseCSS = `:host{all:initial;font:13px/1.5 system-ui,"Microsoft YaHei",sans-serif;color:#f5f0fa;position:fixed;inset:0;pointer-events:none;z-index:2147483600}*{box-sizing:border-box}[hidden]{display:none!important}button,input,select{font:inherit}button{cursor:pointer}button:disabled{cursor:default;opacity:.45}button,input,select{border:1px solid #74647e;border-radius:7px;padding:7px;background:#322a40;color:inherit}input,select{width:100%;min-width:0}button:hover{background:#51405d}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #dbc1fa;outline-offset:2px}.panel{z-index:1000;pointer-events:auto;position:absolute;right:16px;top:56px;width:min(390px,calc(100vw - 24px));max-height:calc(100vh - 72px);overflow:auto;border:1px solid #a78cb3;border-radius:16px;background:#241d30f5;box-shadow:0 12px 60px #0007;padding:15px}.bar,.actions{display:flex;gap:7px;flex-wrap:wrap;align-items:center}.bar h2{font-size:17px;margin:0;flex:1}.subtitle{color:#c4b4cf;font-size:12px}.actions{margin:10px 0}.actions button{flex:1;white-space:nowrap}.primary{background:#6e4f83}.list{display:grid;gap:5px;max-height:180px;overflow:auto;margin:10px 0}.layer{display:flex;gap:6px;align-items:center;border:1px solid #64536f;border-radius:8px;padding:4px}.layer[data-selected=true]{border-color:#ead0ff;background:#584365}.layer .pick{flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;background:transparent}.layer .toggle{padding:4px 7px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}label{display:grid;gap:3px;color:#e1d7e8;font-size:12px}.wide{grid-column:1/-1}.check{display:flex;align-items:center;gap:6px}.check input{width:auto}.notice{white-space:pre-wrap;font-size:12px;min-height:20px;color:#d4c3e1}.notice[data-error=true]{color:#ffb5b5}.pending{padding:9px;border:1px solid #e7c18d;border-radius:9px;background:#59422c}.boxes{z-index:0;position:absolute;inset:0;pointer-events:none}.box{position:absolute;pointer-events:auto;border:1px dashed #e8c1ff;cursor:move;touch-action:none;transform-origin:center;background:#b975ff09}.box[data-selected=true]{border:2px solid #ffe0a4}.box-label{position:absolute;top:0;left:0;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;background:#30213fe8;color:#fff;padding:2px 6px;font-size:11px;pointer-events:none}.resize{position:absolute;right:-6px;bottom:-6px;width:14px;height:14px;border:2px solid white;border-radius:3px;background:#8860a1;cursor:nwse-resize}.assets{display:flex;gap:6px;overflow:auto;padding:4px 0}.asset{min-width:82px;max-width:100px;font-size:11px;overflow:hidden;text-overflow:ellipsis}.asset img{display:block;width:55px;height:42px;object-fit:contain;margin:auto}.section{border-top:1px solid #5b4965;margin-top:13px;padding-top:8px}summary{cursor:pointer;font-weight:600}small{font-size:11px;color:#c4b4cf}hr{border:0;border-top:1px solid #5b4965}.editing-indicator{z-index:1001;pointer-events:auto;position:absolute;top:8px;left:50%;transform:translateX(-50%);background:#30213ff5;border:1px solid #d5b6e5;border-radius:10px;padding:7px 12px;display:flex;gap:10px;align-items:center}.editing-indicator button{padding:4px 9px}@media(max-width:650px){.panel{right:6px;top:48px;max-height:calc(100vh - 54px);width:min(350px,calc(100vw - 12px))}.editing-indicator{left:6px;transform:none;font-size:11px}.editing-indicator span{display:none}}.panel{display:flex;flex-direction:column;overflow:hidden;padding:0}.panel>.bar{padding:12px 14px 6px;flex-shrink:0}.panel>.subtitle,.panel>.notice{padding:0 14px}.editor-tabs{display:flex;gap:5px;padding:8px 14px;border-bottom:1px solid #5b4965}.editor-tabs button{flex:1;min-width:40px}.editor-tabs button[aria-pressed=true]{background:#6e4f83;border-color:#dbc1fa}.panel-body{overflow:auto;padding:0 14px 10px;min-height:0}.panel-footer{flex-shrink:0;flex-wrap:nowrap;padding:10px 12px;margin:0;border-top:1px solid #5b4965;background:#241d30}.panel-footer button{min-width:40px;padding:7px 8px;white-space:nowrap}`;
+  const baseCSS = `:host{all:initial;--panel:#f8fafd;--ink:#293245;--muted:#667186;--edge:#d3d9e7;--control:#fff8;--accent:#836792;--on-accent:#fff;--selected:#8997b42b;--error:#b54343;font:13px/1.5 system-ui,"Microsoft YaHei",sans-serif;color:var(--ink);color-scheme:light;position:fixed;inset:0;pointer-events:none;z-index:2147483600}
+:host([data-mode=dark]){--panel:#202737;--ink:#e0e6f1;--muted:#b0bbcf;--edge:#4a556b;--control:#33405a;--accent:#ad99d1;--on-accent:#211a2d;--selected:#33405a;--error:#ffadad;color-scheme:dark}
+*{box-sizing:border-box}[hidden]{display:none!important}button,input,select{font:inherit}button{cursor:pointer}button:disabled{cursor:default;opacity:.45}
+button,input,select{border:1px solid var(--edge);border-radius:7px;padding:7px 9px;background:var(--control);color:inherit;min-height:34px}
+input,select{width:100%;min-width:0}button:hover:not(:disabled){border-color:var(--accent)}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.panel{z-index:1000;pointer-events:auto;position:absolute;right:16px;top:56px;width:min(390px,calc(100vw - 24px));max-height:calc(100vh - 72px);display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--edge);border-radius:16px;background:var(--panel);box-shadow:0 10px 40px #17223730}
+.bar,.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.bar h2{font-size:15px;margin:0;flex:1}.panel>.bar{padding:14px 16px 6px;flex:none}.bar button{border:0;background:transparent;color:var(--muted)}
+.subtitle,small{color:var(--muted);font-size:12px;line-height:1.5}small{display:block}.panel>.subtitle{padding:0 16px 10px}
+.actions{margin:12px 0}.actions button{flex:1;white-space:nowrap}.primary{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.history-actions{justify-content:flex-end;margin:12px 0 4px}.history-actions button{flex:0 0 auto;padding:4px 9px;min-height:30px;border-color:transparent;background:transparent;color:var(--muted)}
+.list{display:grid;gap:2px;max-height:176px;overflow:auto;margin:8px 0 16px;padding:0 0 8px;border-bottom:1px solid var(--edge);scrollbar-width:thin}
+.layer{display:flex;gap:4px;align-items:center;border-radius:7px;padding:2px}.layer[data-selected=true]{background:var(--selected)}
+.layer .pick{flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:0;background:transparent}.layer[data-selected=true] .pick{font-weight:600}
+.layer .toggle{padding:4px 7px;min-height:30px;border:0;background:transparent;color:var(--muted);font-size:12px}.layer small{padding-right:8px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px 10px;margin:12px 0}label{display:grid;gap:5px;color:var(--ink);font-size:12px;min-width:0}.wide{grid-column:1/-1}.check{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:30px}.check input{width:16px;height:16px;min-height:0;margin:0;accent-color:var(--accent)}
+[aria-label="素材参数"]>b{display:block;margin-bottom:10px;font-size:13px}[aria-label="素材参数"]>.subtitle{margin:6px 0}
+.notice{white-space:pre-wrap;font-size:12px;line-height:1.5;color:var(--muted)}.notice:empty{display:none}.notice[data-error=true]{color:var(--error)}.panel>.notice{flex:none;padding:10px 16px;border-top:1px solid var(--edge)}
+.pending{padding:10px 0;margin:12px 0;border-top:1px solid var(--accent);border-bottom:1px solid var(--edge)}.pending>b{font-size:13px}.pending .actions{margin-bottom:0}
+.boxes{z-index:0;position:absolute;inset:0;pointer-events:none}.box{position:absolute;pointer-events:auto;border:1px dashed #e8c1ff;cursor:move;touch-action:none;transform-origin:center;background:#b975ff09}.box[data-selected=true]{border:2px solid #ffe0a4}.box-label{position:absolute;top:0;left:0;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;background:#30213fe8;color:#fff;padding:2px 6px;font-size:12px;pointer-events:none}.resize{position:absolute;right:-6px;bottom:-6px;width:14px;height:14px;border:2px solid white;border-radius:3px;background:#8860a1;cursor:nwse-resize}
+.assets{display:flex;gap:8px;overflow:auto;padding:8px 0}.assets:empty{display:none}.asset{min-width:82px;max-width:100px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.asset img{display:block;width:55px;height:42px;object-fit:contain;margin:0 auto 6px}
+.section{border-top:1px solid var(--edge);margin-top:18px;padding-top:12px}summary{cursor:pointer;font-weight:600;min-height:30px}.section small{margin:8px 0}.section>button{margin-top:8px}.project-actions .actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.editor-tabs{display:flex;gap:4px;padding:0 16px;border-bottom:1px solid var(--edge);flex:none}.editor-tabs button{flex:1;min-width:40px;border:0;border-bottom:2px solid transparent;border-radius:0;background:transparent;padding:9px 4px;color:var(--muted)}.editor-tabs button[aria-pressed=true]{border-bottom-color:var(--accent);color:var(--ink);font-weight:600}
+.panel-body{overflow:auto;padding:0 16px 16px;min-height:0;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--edge) transparent}
+.panel-footer{flex:none;flex-wrap:nowrap;padding:12px 16px;margin:0;border-top:1px solid var(--edge);background:var(--panel)}.panel-footer button{min-width:0;padding:7px 8px;white-space:nowrap}
+.editing-indicator{z-index:1001;pointer-events:auto;position:absolute;top:8px;left:50%;transform:translateX(-50%);background:var(--panel);color:var(--ink);border:1px solid var(--edge);border-radius:10px;padding:7px 12px;display:flex;gap:10px;align-items:center;font-size:12px}.editing-indicator button{padding:4px 9px;min-height:30px}
+@media(max-width:650px){.panel{right:6px;top:48px;max-height:calc(100vh - 54px);width:min(390px,calc(100vw - 12px))}.editing-indicator{left:6px;transform:none;max-width:calc(100vw - 12px)}.editing-indicator span{display:none}.panel-footer{padding:10px 12px;gap:6px}.panel-footer button{padding:7px 5px}}`;
 
   function mountSunlitDiy(options) {
     const win = options.window || global, doc = options.document || win.document, adapter = options.adapter;
@@ -51,27 +76,27 @@
     const cancelButton = button('取消编辑', cancelEditing, { hidden: true });
     const collapseButton = button('收起面板',()=>{opened=false;renderVisibility();focusCanvas();},{hidden:true});
     topActions.append(editButton, saveButton, cancelButton, collapseButton); panel.append(topActions);
-    const historyActions = element('div', { className: 'actions' });
+    const historyActions = element('div', { className: 'actions history-actions' });
     const undoButton = button('撤销', doUndo), redoButton = button('重做', doRedo);
-    historyActions.append(undoButton, redoButton, button('恢复默认', reset), button('恢复上次保存', restorePrevious)); panel.append(historyActions);
+    historyActions.append(undoButton, redoButton); panel.append(historyActions);
     const layerList = element('div', { className: 'list', 'aria-label': '图层列表' }); panel.append(layerList);
     const pendingNotice = element('div', { className: 'pending', hidden: true });
     pendingNotice.append(element('b', {}, '素材预览 · 可先调整参数'));
     const pendingActions = element('div', { className: 'actions' });
-    pendingActions.append(button('调整预览',()=>{if(pending){selected=pending.id;renderProperties();renderBoxes();}}),button('确认添加', confirmPending), button('取消新增', cancelPending)); pendingNotice.append(pendingActions); panel.append(pendingNotice);
+    pendingActions.append(button('调整预览',()=>{if(pending){selected=pending.id;activateTab(tabForLayer(pending));render();}}),button('确认添加', confirmPending), button('取消新增', cancelPending)); pendingNotice.append(pendingActions); panel.append(pendingNotice);
     const properties = element('div', { 'aria-label': '素材参数' }); panel.append(properties);
-    const addSection = element('details', { className: 'section', open: true }); addSection.append(element('summary', {}, '新增素材 / 特效'));
+    const addSection = element('details', { className: 'section', open: true }); const addSummary=element('summary', {}, '添加素材');addSection.append(addSummary);
     const addGrid = element('div', { className: 'grid' });
-    const newName = input('text', '新素材名称'); newName.placeholder = '先为素材命名';
+    const newName = input('text', '新素材名称');
     const newKind = select('素材用途', USES);
     addGrid.append(label('素材名称', newName), label('素材用途', newKind)); addSection.append(addGrid);
     const importImage = input('file', '导入素材文件'); importImage.accept = MIME.join(','); importImage.hidden = true;
     listen(importImage, 'change', () => { const file = importImage.files && importImage.files[0]; if (file) run(() => addFile(file)); importImage.value = ''; });
     const addActions = element('div', { className: 'actions' });
     addActions.append(button('导入图片 / GIF', () => importImage.click()), button('落叶预设', () => addEffect('leaf')), button('泡泡预设', () => addEffect('bubble')));
-    addSection.append(element('small',{},'应用范围：当前平台、当前明暗方案。固定用途替换对应位置；自由图片可重复添加。'), addActions, importImage, element('small', {}, 'PNG / JPEG / WebP / GIF；单素材 ≤12 MiB，素材库合计 ≤60 MiB。不会导入脚本、SVG 或远程 URL。'));
+    addSection.append(addActions, importImage, element('small', {}, 'PNG / JPEG / WebP / GIF · 每张最多 12 MiB'));
     const library = element('div', { className: 'assets', 'aria-label': '素材库' }); addSection.append(library);
-    addSection.append(button('清理未使用素材',cleanUnusedAssets),element('small',{},'仅清理完全无引用的素材；两平台亮暗方案、恢复槽、活动草稿和撤销历史均受保护。'));panel.append(addSection);
+    addSection.append(button('清理未使用素材',cleanUnusedAssets));panel.append(addSection);
     const typographySection = element('details', { className: 'section' }); typographySection.append(element('summary', {}, '字体与文字颜色'));
     const typographyGrid = element('div', { className: 'grid' }); typographySection.append(typographyGrid); panel.append(typographySection);
     const typeNodes = {};
@@ -83,16 +108,23 @@
     const gradient = input('checkbox', '启用渐变文字'); listen(gradient, 'change', () => changeTypography('gradientEnabled', gradient.checked)); typeNodes.gradientEnabled = gradient;
     typographyGrid.append(label('启用渐变文字', gradient, 'check wide'));
     typographySection.append(button('字体跟随默认', () => { checkpoint(); draft.typography = null; changed(); renderTypography(); }));
-    const transfer = element('div', { className: 'actions section' });
+    const projectSection=element('details',{className:'section project-actions'});projectSection.append(element('summary',{},'工程'));
+    const transfer = element('div', { className: 'actions' });
     const importProject = input('file', '导入工程文件'); importProject.accept = 'application/json,.json'; importProject.hidden = true;
     listen(importProject, 'change', () => { const file = importProject.files && importProject.files[0]; if (file) run(() => importFile(file)); importProject.value = ''; });
-    transfer.append(button('导出分享工程', exportProject), button('导入工程', () => importProject.click()), importProject); panel.append(transfer);
+    transfer.append(button('导出分享工程', exportProject), button('导入工程', () => importProject.click()), button('恢复默认', reset), button('恢复上次保存', restorePrevious), importProject); projectSection.append(transfer);
 
     const tabs=element('nav',{className:'editor-tabs','aria-label':'编辑分类'}),body=element('div',{className:'panel-body'});
-    ['素材','布局','字体','特效'].forEach(name=>{const node=button(name,()=>{activeTab=name;renderTabs();if(name==='字体')typographySection.open=true;if(name==='布局'){const layer=allLayers().find(item=>item.kind==='region');if(layer){selected=layer.id;renderProperties();renderList();}}if(name==='特效'){newKind.value='effect';const layer=allLayers().find(item=>item.kind==='effect');if(layer){selected=layer.id;renderProperties();renderList();}}},{'aria-pressed':String(name===activeTab)});tabs.append(node);});
-    body.append(historyActions,layerList,pendingNotice,properties,addSection,typographySection,transfer);
-    topActions.classList.add('panel-footer');panel.replaceChildren(heading,subtitle,status,tabs,body,topActions);
-    function renderTabs(){for(const node of tabs.children)node.setAttribute('aria-pressed',String(node.textContent===activeTab));layerList.hidden=activeTab==='字体';properties.hidden=activeTab==='字体';addSection.hidden=!['素材','特效'].includes(activeTab);typographySection.hidden=activeTab!=='字体';if(activeTab==='字体')typographySection.open=true;}
+    ['素材','布局','字体','特效'].forEach(name=>tabs.append(button(name,()=>{
+      activateTab(name);
+      if(name!=='字体'&&(!activeLayer()||tabForLayer(activeLayer())!==name))selected=allLayers().find(layer=>tabForLayer(layer)===name)?.id||null;
+      renderTabs();renderList();renderProperties();renderBoxes();
+    },{'aria-pressed':String(name===activeTab)})));
+    body.append(historyActions,layerList,pendingNotice,properties,addSection,typographySection,projectSection);
+    topActions.classList.add('panel-footer');panel.replaceChildren(heading,subtitle,tabs,body,status,topActions);
+    function activateTab(name){activeTab=name;if(name==='特效')newKind.value='effect';else if(name==='素材'&&newKind.value==='effect')newKind.value='image';}
+    function tabForLayer(layer){return layer.kind==='region'?'布局':layer.kind==='effect'?'特效':'素材';}
+    function renderTabs(){for(const node of tabs.children)node.setAttribute('aria-pressed',String(node.textContent===activeTab));layerList.hidden=activeTab==='字体';properties.hidden=activeTab==='字体';addSection.hidden=!['素材','特效'].includes(activeTab);addSummary.textContent=activeTab==='特效'?'添加特效':'添加素材';typographySection.hidden=activeTab!=='字体';if(activeTab==='字体')typographySection.open=true;}
 
     function empty() { return { layers: [], typography: null, foreignLayouts: {} }; }
     function element(tag, attrs, text) {
@@ -173,7 +205,7 @@
     function apply() { if (!disposed) adapter.apply(effectiveLayers(), draft.typography ? copy(draft.typography) : null, mode); }
     function snapshot() { return { draft:copy(draft), pending:copy(pending), stagedModes:copy(stagedModes), selected }; }
     function checkpoint() { undo.push(snapshot()); if (undo.length > 80) undo.shift(); redo = []; }
-    function restoreSnapshot(value) { draft = value.draft; pending = value.pending; stagedModes = value.stagedModes; selected = value.selected; changed(); render(); }
+    function restoreSnapshot(value) { draft = value.draft; pending = value.pending; stagedModes = value.stagedModes; selected = value.selected;if(activeLayer())activateTab(tabForLayer(activeLayer())); changed(); render(); }
     function doUndo() { if (!undo.length) return; redo.push(snapshot()); restoreSnapshot(undo.pop()); }
     function doRedo() { if (!redo.length) return; undo.push(snapshot()); restoreSnapshot(redo.pop()); }
     function changed(options) {
@@ -214,7 +246,7 @@
       if(missing){reservations.delete(id);assets=assets.filter(asset=>asset.id!==id);renderLibrary();throw new Error('素材已被另一窗口清理，请重新导入。');}
     }
     async function cleanUnusedAssets() {
-      notice('正在核对各平台方案、恢复槽和活动草稿的素材引用…');
+      notice('正在清理未使用素材…');
       await storageQueue.catch(()=>{});await pinsQueue.catch(()=>{});if(disposed)return;
       let request;const records=await transaction(['projects'],tx=>{request=tx.objectStore('projects').getAll();return()=>request.result||[];});
       const stale=new Set();let conservative=false;
@@ -231,7 +263,7 @@
         });assetRows.forEach(asset=>{if(referenced.has(asset.id))remaining.push(asset);else{assetStore.delete(asset.id);removed++;freed+=asset.bytes||0;}});};
         projectsRequest.onsuccess=()=>{try{projectRows=projectsRequest.result||[];finish();}catch(_){tx.abort();}};assetsRequest.onsuccess=()=>{try{assetRows=assetsRequest.result||[];finish();}catch(_){tx.abort();}};
       },true);
-      if(disposed)return;assets=remaining;renderLibrary();notice('已清理 '+removed+' 个未使用素材，释放 '+(freed/1024/1024).toFixed(2)+' MiB。保存方案、恢复槽、活动草稿和撤销历史引用均保留。'+(conservative?' 无法确认部分旧窗口状态，已保守保留其引用。':''));
+      if(disposed)return;assets=remaining;renderLibrary();notice('已清理 '+removed+' 个未使用素材，释放 '+(freed/1024/1024).toFixed(2)+' MiB。'+(conservative?'部分素材正在使用，已保留。':''));
     }
     async function persist(next) {
       const targetMode = mode, recordKey = key(targetMode), compact=compactState(next);let nextPrevious=empty();
@@ -274,7 +306,7 @@
         let prior = null; try { prior = record && record.previous ? await validateState(record.previous, false) : null; } catch (_) { /* A damaged recovery slot must not discard the valid current project. */ }
         saved = copy(value); draft = copy(value); previous = prior;
         if (disposed || serial !== loadSerial) return;
-        loading = false; apply(); render(); notice(record ? '已载入此模式的保存方案。' : '跟随原预设；选择图层可调整参数。');
+        loading = false; apply(); render(); notice(record ? '已载入保存方案' : '');
       } catch(error) { if (disposed || serial !== loadSerial) return; loading = false; saved = empty(); draft = empty(); previous = null; apply(); render(); notice(error.message, true); }
     }
     async function init() {
@@ -288,22 +320,23 @@
     }
     const ready = init();
     function renderVisibility() { panel.hidden = !opened; indicator.hidden = !editing; editButton.hidden = editing; saveButton.hidden = !editing; cancelButton.hidden = !editing;collapseButton.hidden=!editing; }
-    function render() { if (disposed) return; renderVisibility();renderTabs(); subtitle.textContent = (mode === 'dark' ? '暗色方案' : '亮色方案') + ' · ' + platform.toUpperCase() + (editing ? ' · 草稿预览' : ' · 参数即时保存'); renderList(); renderProperties(); renderTypography(); renderLibrary(); renderBoxes(); updateHistory(); syncPins(); }
+    function render() { if (disposed) return;host.dataset.mode=mode; renderVisibility();renderTabs(); subtitle.textContent = (mode === 'dark' ? '暗色' : '亮色') + (editing ? ' · 编辑中' : ' · 自动保存'); renderList(); renderProperties(); renderTypography(); renderLibrary(); renderBoxes(); updateHistory(); syncPins(); }
     function renderList() {
       layerList.replaceChildren();
-      allLayers().forEach(layer => {
+      allLayers().filter(layer=>tabForLayer(layer)===activeTab).forEach(layer => {
         const row = element('div', { className:'layer', 'data-selected': String(selected === layer.id), 'data-layer-id':layer.id });
-        const pick = button(layer.name, () => { selected = layer.id; renderList(); renderProperties(); renderBoxes(); focusCanvas(); }, { className:'pick', title:layer.name });
-        const visible = button(layer.enabled ? '◉' : '○', () => { checkpoint(); selected = layer.id; const target = mutableLayer(); target.enabled = !target.enabled; changed(); renderProperties(); }, { className:'toggle', 'aria-label':(layer.enabled ? '隐藏 ' : '显示 ') + layer.name });
+        const pick = button(layer.name, () => { selected = layer.id; renderList(); renderProperties(); renderBoxes(); focusCanvas(); }, { className:'pick', title:layer.name, 'aria-pressed':String(selected===layer.id) });
+        const visible = button(layer.enabled ? '隐藏' : '显示', () => { checkpoint(); selected = layer.id; const target = mutableLayer(); target.enabled = !target.enabled; changed(); renderProperties(); }, { className:'toggle', 'aria-label':(layer.enabled ? '隐藏 ' : '显示 ') + layer.name });
         if(layer.kind!=='region')row.append(visible);row.append(pick); if (layer.locked) row.append(element('small',{},'锁定')); layerList.append(row);
       });
+      if(!layerList.childElementCount)layerList.append(element('small',{},loading?'正在加载…':activeTab==='特效'?'暂无特效':'暂无图层'));
       pendingNotice.hidden = !pending;
     }
     function renderProperties() {
       properties.replaceChildren(); fieldNodes = {};
       const layer = activeLayer();
-      if (!layer) { properties.append(element('small',{},loading ? '正在读取本地素材库…' : '选择一个图层，参数与画布同步。')); return; }
-      const title = element('b',{},(pending && layer.id === pending.id ? '预览：' : '参数：') + layer.name); properties.append(title);
+      if (!layer||tabForLayer(layer)!==activeTab) { properties.append(element('small',{},loading ? '正在加载…' : '选择图层以调整参数')); return; }
+      const title = element('b',{},(pending && layer.id === pending.id ? '预览：' : '') + layer.name); properties.append(title);
       if(layer.builtin&&layer.id==='background')properties.append(element('div',{className:'subtitle'},'完整显示使用原始图片；切回铺满恢复场景动态。'));
       const grid = element('div',{className:'grid'}); properties.append(grid);
       if(layer.kind!=='region'){const usage=select('当前素材用途',USES);usage.value=layer.builtin&&BUILTINS[layer.id]&&layer.kind!=='effect'?layer.id:layer.kind==='effect'?'effect':'image';listen(usage,'change',()=>run(()=>changeUse(usage.value)));properties.insertBefore(label('素材用途',usage),grid);}
@@ -324,7 +357,7 @@
           else target[key] = number(node.value,min,max,layer[key]);
           if (target.kind === 'region') target.rotation = 0;
           constrainGeometry(target);
-          title.textContent = (pending && target.id === pending.id ? '预览：' : '参数：') + target.name;
+          title.textContent = (pending && target.id === pending.id ? '预览：' : '') + target.name;
           changed({previewOnly:!!pending && target.id === pending.id});
           if(['x','y','width','height','lockAspect','followRegion'].includes(key))syncGeometryInputs();
         });
@@ -383,7 +416,7 @@
     listen(boxes,'pointerdown',event => {
       const box=event.target.closest('.box'); if(!box || event.button!==0 || loading) return;
       event.preventDefault(); selected=box.dataset.layerId; const layer=activeLayer(); if(!layer||layer.locked)return;
-      checkpoint(); gesture={pointerId:event.pointerId,id:layer.id,startX:event.clientX,startY:event.clientY,layer:copy(layer),resize:event.target.classList.contains('resize')};
+      activateTab(tabForLayer(layer));renderTabs();checkpoint(); gesture={pointerId:event.pointerId,id:layer.id,startX:event.clientX,startY:event.clientY,layer:copy(layer),resize:event.target.classList.contains('resize')};
       renderList(); renderProperties(); renderBoxes();focusCanvas();
       if(boxes.setPointerCapture) boxes.setPointerCapture(event.pointerId);
     });
@@ -431,20 +464,20 @@
       if(pending&&selected!==pending.id)throw new Error('请先确认或取消当前素材预览。');
       const asset=assets.find(item=>item.id===current.assetId);
       const next=makeUseLayer(use,current.name,asset,current);next._originId=pending?(pending._originId||null):current.id;
-      if(pending){checkpoint();pending=next;selected=next.id;apply();render();}
+      if(pending){checkpoint();pending=next;selected=next.id;activateTab(tabForLayer(next));apply();render();}
       else await beginPending(next);
     }
-    async function beginPending(layer) { if(pending)throw new Error('请先确认或取消当前新增预览。');const epoch=operationEpoch;try{if(layer.assetId)await pinAsset(layer.assetId);if(disposed||epoch!==operationEpoch)return;if(pending)throw new Error('请先确认或取消当前新增预览。');checkpoint();pending=layer;selected=layer.id;apply();render();notice('正在预览素材用途；可调整位置和尺寸，确认后替换对应位置。');}finally{if(layer.assetId)reservations.delete(layer.assetId);syncPins();} }
+    async function beginPending(layer) { if(pending)throw new Error('请先确认或取消当前新增预览。');const epoch=operationEpoch;try{if(layer.assetId)await pinAsset(layer.assetId);if(disposed||epoch!==operationEpoch)return;if(pending)throw new Error('请先确认或取消当前新增预览。');checkpoint();pending=layer;selected=layer.id;activateTab(tabForLayer(layer));apply();render();notice('调整后确认添加');}finally{if(layer.assetId)reservations.delete(layer.assetId);syncPins();} }
     async function addFile(file) { if(pending)throw new Error('请先确认或取消当前新增预览。');const epoch=operationEpoch,kind=newKind.value,name=newName.value.trim()||file.name.replace(/\.[^.]+$/,'');const asset=await ingestAsset(file);if(disposed||epoch!==operationEpoch){if(asset)reservations.delete(asset.id);syncPins();return;}await beginPending(makeUseLayer(kind,name,asset)); }
     function addEffect(preset) { const layer=makeLayer('effect',newName.value.trim()||(preset==='leaf'?'落叶':'泡泡'));layer.effect.preset=preset;layer.effect.direction=preset==='leaf'?'down':'up';return beginPending(layer); }
     async function replaceFile(file,id) { const epoch=operationEpoch,asset=await ingestAsset(file);try{if(disposed||epoch!==operationEpoch)return;const current=activeLayer();if(!current||current.id!==id)throw new Error('选择的图层已变化，请重新选择后替换。');checkpoint();const layer=mutableLayer();layer.source=asset.source;layer.assetId=asset.id;delete layer.sourceRef;if(layer.kind==='effect')layer.effect.preset='custom';changed({previewOnly:!!pending&&id===pending.id});renderProperties();}finally{if(asset)reservations.delete(asset.id);syncPins();} }
-    function confirmPending() { if(!pending)return;checkpoint();draft.layers=draft.layers.filter(layer=>layer.id!==pending.id&&layer.id!==pending._originId);delete pending._originId;draft.layers.push(pending);pending=null;changed();render();notice(editing?'素材已加入草稿；保存后保留。':'素材已添加，正在保存。'); }
-    function cancelPending() { if(!pending)return;checkpoint();pending=null;selected=null;apply();render();notice('已取消新增，导入文件仍可在素材库复用。'); }
-    async function startEditing() { if(disposed)return;await ready;if(disposed)return;if(editing){opened=true;renderVisibility();focusCanvas();return;}const needsSave=!!saveTimer;win.clearTimeout(saveTimer);saveTimer=null;if(needsSave)await persist(copy(draft));await storageQueue.catch(()=>{});if(disposed)return;editing=true;opened=true;undo=[];redo=[];render();focusCanvas();notice('草稿实时预览；方向键微调1px，Shift为10px；保存后保留，取消可恢复。'); }
+    function confirmPending() { if(!pending)return;checkpoint();draft.layers=draft.layers.filter(layer=>layer.id!==pending.id&&layer.id!==pending._originId);delete pending._originId;draft.layers.push(pending);pending=null;changed();render();notice(editing?'素材已加入草稿':'素材已添加，正在保存。'); }
+    function cancelPending() { if(!pending)return;checkpoint();pending=null;selected=null;apply();render();notice('已取消新增'); }
+    async function startEditing() { if(disposed)return;await ready;if(disposed)return;if(editing){opened=true;renderVisibility();focusCanvas();return;}const needsSave=!!saveTimer;win.clearTimeout(saveTimer);saveTimer=null;if(needsSave)await persist(copy(draft));await storageQueue.catch(()=>{});if(disposed)return;editing=true;opened=true;undo=[];redo=[];render();focusCanvas();notice('方向键微调 1px，Shift + 方向键微调 10px'); }
     async function saveAndExit() { if(pending)throw new Error('请先确认或取消新增预览。');if(saving)return;saving=true;panel.inert=true;notice('正在保存工程…');try{win.clearTimeout(saveTimer);saveTimer=null;const targetMode=mode;let okay;if(stagedModes){stagedModes[mode]=copy(draft);okay=await persistModes(stagedModes);}else okay=await persist(copy(draft));if(!okay||disposed||mode!==targetMode)return;stagedModes=null;editing=false;opened=false;undo=[];redo=[];render();}finally{saving=false;panel.inert=false;} }
     function cancelEditing() { ++operationEpoch;win.clearTimeout(saveTimer);saveTimer=null;draft=copy(saved);pending=null;stagedModes=null;selected=null;editing=false;opened=false;undo=[];redo=[];apply();render(); }
     function close() { if(editing){cancelEditing();return;}++operationEpoch;if(pending)cancelPending();opened=false;renderVisibility(); }
-    function reset() { ++operationEpoch;checkpoint();draft=empty();pending=null;stagedModes=null;selected=null;changed();render();notice('已恢复原预设；导入素材库保留。可撤销或恢复上次保存。'); }
+    function reset() { ++operationEpoch;checkpoint();draft=empty();pending=null;stagedModes=null;selected=null;changed();render();notice('已恢复默认，可撤销'); }
     async function restorePrevious() { if(!previous)throw new Error('还没有可恢复的上次保存方案。');const restored=await validateState(previous,false);if(disposed)return;checkpoint();draft=restored;pending=null;selected=null;changed();render();notice('已恢复上次保存方案。'); }
     async function ingestAsset(file) {
       if(!MIME.includes(file.type))throw new Error('只接受 PNG、JPEG、WebP、GIF；拒绝 SVG、脚本和其他文件。');
@@ -510,7 +543,7 @@
       const modes={light:await collect('light'),dark:await collect('dark')};
       const project={schema:SCHEMA,version:VERSION,exportedAt:new Date().toISOString(),assets:copy(assets),modes};
       const json=JSON.stringify(project,null,2);if(json.length>MAX_JSON)throw new Error('工程超过导出 85 MiB 限额。');
-      const blob=new win.Blob([json],{type:'application/json'}),url=win.URL.createObjectURL(blob),anchor=element('a',{href:url,download:'sunlit-tides-diy.json'});shadow.append(anchor);anchor.click();anchor.remove();win.setTimeout(()=>win.URL.revokeObjectURL(url),30000);notice('工程已导出，包含亮暗方案与素材；各宿主布局独立。');
+      const blob=new win.Blob([json],{type:'application/json'}),url=win.URL.createObjectURL(blob),anchor=element('a',{href:url,download:'sunlit-tides-diy.json'});shadow.append(anchor);anchor.click();anchor.remove();win.setTimeout(()=>win.URL.revokeObjectURL(url),30000);notice('工程已导出');
     }
     async function importFile(file) {
       const epoch=operationEpoch,importWasEditing=editing;
@@ -542,7 +575,7 @@
         tx.objectStore('projects').put(sessionRecord());
         if(!importAsDraft)['light','dark'].forEach((targetMode,index)=>tx.objectStore('projects').put({key:key(targetMode),schema:VERSION,value:compactState(imported[targetMode]),previous:records[index]?records[index].value:empty()}));
       },true);}catch(error){importReservations.forEach(id=>reservations.delete(id));syncPins();throw error;}
-      if(disposed||epoch!==operationEpoch){importReservations.forEach(id=>reservations.delete(id));syncPins();return;}assets=[...merged.values()];if(importAsDraft){checkpoint();stagedModes=copy(imported);draft=copy(imported[mode]);}else{previous=copy(saved);saved=copy(imported[mode]);draft=copy(saved);undo=[];redo=[];}pending=null;selected=null;apply();render();importReservations.forEach(id=>reservations.delete(id));syncPins();notice(importAsDraft?'完整工程已导入草稿；保存后保留，取消可回到原方案。':'完整工程已导入并保存；可恢复上次保存。');
+      if(disposed||epoch!==operationEpoch){importReservations.forEach(id=>reservations.delete(id));syncPins();return;}assets=[...merged.values()];if(importAsDraft){checkpoint();stagedModes=copy(imported);draft=copy(imported[mode]);}else{previous=copy(saved);saved=copy(imported[mode]);draft=copy(saved);undo=[];redo=[];}pending=null;selected=null;apply();render();importReservations.forEach(id=>reservations.delete(id));syncPins();notice(importAsDraft?'完整工程已导入草稿':'完整工程已导入并保存');
     }
     async function refresh() {
       if(disposed)return;await ready;if(disposed)return;const next=adapter.getMode()==='dark'?'dark':'light';
@@ -556,7 +589,7 @@
       try{adapter.apply([],null,mode);}finally{if(win.__SUNLIT_DIY__===api)delete win.__SUNLIT_DIY__;}
     }
     const panelElements=()=>({host,shadow,panel,header:heading,handle:heading,style});
-    const api={getPanelElements:panelElements,collapse(){if(disposed)return;opened=false;renderVisibility();},open(){if(disposed)return;activeTab='素材';opened=true;render();return ready;},startEditing,refresh,dispose,getState(){return copy({schema:VERSION,platform,mode,ready:!loading,open:opened,editing,layers:draft.layers,typography:draft.typography,pending,saved,assets:assets.map(({source,...metadata})=>metadata),selected});}};
+    const api={getPanelElements:panelElements,collapse(){if(disposed)return;opened=false;renderVisibility();},open(){if(disposed)return;activateTab('素材');opened=true;render();return ready;},startEditing,refresh,dispose,getState(){return copy({schema:VERSION,platform,mode,ready:!loading,open:opened,editing,layers:draft.layers,typography:draft.typography,pending,saved,assets:assets.map(({source,...metadata})=>metadata),selected});}};
     win.__SUNLIT_DIY__=api;
     if(typeof win.mountSunlitPanel==='function')panelTransport=win.mountSunlitPanel({window:win,document:doc,panel,handle:heading,styleText:style.textContent,theme:()=>adapter.getMode(),onClose:close,key:'theme'});
     if(typeof adapter.onPanelReady==='function')adapter.onPanelReady(panelElements(),api);

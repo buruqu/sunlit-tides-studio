@@ -10,9 +10,10 @@ const near=(a,b,label)=>assert.ok(Math.abs(a-b)<.7,`${label}: ${a} vs ${b}`);
  try{
   const page=await browser.newPage({viewport:{width:1440,height:950}});page.setDefaultTimeout(10000);page.on('pageerror',e=>errors.push(e.message));
   await page.goto(`http://127.0.0.1:${server.address().port}/`);await page.waitForFunction(()=>window.__SUNLIT_DIY__?.getState().ready);
-  const host=page.locator('#sunlit-diy-editor'),panel=host.getByRole('dialog'),pick=id=>panel.locator(`.layer[data-layer-id="${id}"] .pick`).click(),num=name=>panel.getByRole('spinbutton',{name,exact:true});
+  const host=page.locator('#sunlit-diy-editor'),panel=host.getByRole('dialog'),num=name=>panel.getByRole('spinbutton',{name,exact:true});
+  const pick=async id=>{const kind=await page.evaluate(id=>__SUNLIT_DIY__.getState().layers.find(layer=>layer.id===id)?.kind,id);const tab=kind==='effect'||id==='effect-default'?'特效':kind==='region'||id.endsWith('-region')?'布局':'素材';await panel.getByRole('button',{name:tab,exact:true}).click();await panel.locator(`.layer[data-layer-id="${id}"] .pick`).click();};
   const field=(name,value)=>num(name).fill(String(value)),box=id=>host.locator(`.box[data-layer-id="${id}"]`);
-  const open=async()=>{await page.getByRole('button',{name:'调色板',exact:true}).click();await page.getByRole('button',{name:'开启 DIY 编辑',exact:true}).click();await panel.waitFor({state:'visible'});};
+  const open=async()=>{await page.getByRole('button',{name:'调色板',exact:true}).click();await page.getByRole('button',{name:'开启编辑',exact:true}).click();await panel.waitFor({state:'visible'});};
   await open();await pick('portrait-left');
   assert.equal(await panel.getByRole('combobox',{name:'图片适应',exact:true}).inputValue(),'contain','Selecting a builtin portrait must preserve full-image fit');
   await panel.getByRole('textbox',{name:'素材名称',exact:true}).fill('我的等比例立绘');
